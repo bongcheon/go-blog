@@ -1,12 +1,23 @@
 package main
 
-import "github.com/go-martini/martini"
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
 
 func main() {
-	m := martini.Classic()
-	m.Get("/", func() string {
-		return "Hello world!"
+	router := gin.Default()
+	router.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "hello world")
 	})
-	m.Run()
+	router.GET("/ping", func(c *gin.Context) {
+		c.String(http.StatusOK, "pong")
+	})
+	router.POST("/submit", func(c *gin.Context) {
+		c.String(http.StatusUnauthorized, "not authorized")
+	})
+	router.PUT("/error", func(c *gin.Context) {
+		c.String(http.StatusInternalServerError, "an error happened :(")
+	})
+	router.Run(":8080")
 }
-
