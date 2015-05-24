@@ -8,6 +8,7 @@ import (
 
 	"github.com/bongcheon/go-blog/api"
 	"github.com/bongcheon/go-blog/config"
+	"github.com/bongcheon/go-blog/db/mongodb"
 )
 
 func main() {
@@ -17,6 +18,8 @@ func main() {
 	if port == "" {
 		port = config.Get("server_port")
 	}
+
+	mongodb.Init(config.Get("mongodb_host"), config.Get("mongodb_db"))
 
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {

@@ -7,11 +7,10 @@ import (
 
 type Collection struct {
 	Name string
-	Connection *Connection
 }
 
 func (c *Collection) internalGetCollection() *mgo.Collection {
-	return c.Connection.Session.DB(c.Connection.DatabaseName).C(c.Name);
+	return GetDB().C(c.Name)
 }
 
 func (c *Collection) Save(doc SuperDocument) error {

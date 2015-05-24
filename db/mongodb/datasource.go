@@ -4,37 +4,25 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-type Connection struct {
-	HostName string
-	DatabaseName string
-	Session *mgo.Session
-}
+var (
+	db *mgo.Database
+)
 
-func (conn *Connection) GetCollection(name string) *Collection {
-	return &Collection {
-		Name: name,
-		Connection: conn,
-	}
-}
-
-func (conn *Connection) Open() {
-	var err error
-	conn.Session, err = mgo.Dial(conn.HostName)
+func Init(host string, dbname string) {
+	session, err := mgo.Dial(host)
 	if err != nil {
 		panic(err)
 	}
+
+	db = session.DB(dbname)
 }
 
-func (conn *Connection) Close() {
-	conn.Session.Close()
+func GetDB() *mgo.Database {
+	return db
 }
 
-func GetConnection() (*Connection) {
-	conn := &Connection {
-		HostName: "localhost", //TODO
-		DatabaseName: "go-blog-dev", //TODO
+func GetCollection(cname string) *Collection {
+	return &Collection{
+		Name: cname,
 	}
-	conn.Open()
-	return conn
 }
-

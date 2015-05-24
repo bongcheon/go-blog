@@ -12,10 +12,9 @@ import (
 func GetArticle(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	conn := mongodb.GetConnection()
 	article := &model.Article{
 	}
-	err := conn.GetCollection("Article").FindById(bson.ObjectIdHex(id), article)
+	err := mongodb.GetCollection("Article").FindById(bson.ObjectIdHex(id), article)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -34,7 +33,6 @@ func DeleteArticle(c *gin.Context) {
 }
 
 func PostArticle(c *gin.Context) {
-	conn := mongodb.GetConnection()
 
 	//FIXME
 	article := &model.Article{
@@ -43,7 +41,7 @@ func PostArticle(c *gin.Context) {
 	}
 	article.SetId(bson.NewObjectId())
 
-	err := conn.GetCollection("Article").Save(article)
+	err := mongodb.GetCollection("Article").Save(article)
 	if err != nil {
 		fmt.Println(err)
 	} else {
