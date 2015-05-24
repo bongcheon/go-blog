@@ -1,12 +1,16 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
 	"github.com/bongcheon/go-blog/api"
+	"github.com/bongcheon/go-blog/config"
 )
 
 func main() {
+
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "hello world")
@@ -15,5 +19,5 @@ func main() {
 	router.PUT("/articles/:id", api.UpdateArticle)
 	router.DELETE("/articles/:id", api.DeleteArticle)
 	router.POST("/articles", api.PostArticle)
-	router.Run(":8080")
+	router.Run(":" + config.Get("server_port"))
 }

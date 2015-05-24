@@ -1,0 +1,17 @@
+#
+# go-blog configuration
+#
+
+development:
+
+  mongodb_host: localhost
+  mongodb_db: go-blog-dev
+
+  server_port: 3000
+
+production:
+
+  mongodb_host: localhost
+  mongodb_db: go-blog-prod
+
+  server_port: 3100
