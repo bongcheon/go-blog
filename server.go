@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"github.com/bongcheon/go-blog/api"
 )
 
 func main() {
@@ -10,14 +11,9 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "hello world")
 	})
-	router.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "pong")
-	})
-	router.POST("/submit", func(c *gin.Context) {
-		c.String(http.StatusUnauthorized, "not authorized")
-	})
-	router.PUT("/error", func(c *gin.Context) {
-		c.String(http.StatusInternalServerError, "an error happened :(")
-	})
+	router.GET("/articles/:id", api.GetArticle)
+	router.PUT("/articles/:id", api.UpdateArticle)
+	router.DELETE("/articles/:id", api.DeleteArticle)
+	router.POST("/articles", api.PostArticle)
 	router.Run(":8080")
 }
