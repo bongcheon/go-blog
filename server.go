@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 
@@ -11,6 +12,12 @@ import (
 
 func main() {
 
+	// Use development as default
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = config.Get("server_port")
+	}
+
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "hello world")
@@ -19,5 +26,5 @@ func main() {
 	router.PUT("/articles/:id", api.UpdateArticle)
 	router.DELETE("/articles/:id", api.DeleteArticle)
 	router.POST("/articles", api.PostArticle)
-	router.Run(":" + config.Get("server_port"))
+	router.Run(":" + port)
 }
