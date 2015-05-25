@@ -22,6 +22,21 @@ func main() {
 	mongodb.Init(config.Get("mongodb_host"), config.Get("mongodb_db"))
 
 	router := gin.Default()
+
+	// CORS
+	router.Use(func(c *gin.Context) {
+		// Run this on all requests
+		// Should be moved to a proper middleware
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type,Token")
+		c.Next()
+	})
+
+	router.OPTIONS("/*cors", func(c *gin.Context) {
+		// Empty 200 response
+	})
+	// CORS END
+
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "hello world")
 	})
