@@ -40,12 +40,19 @@ func DeleteArticle(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"id":id})//TODO
 }
 
+type ArticleJSON struct {
+	Subject string `json:"subject" binding:"required"`
+	Body string `json:"body" binding:"required"`
+}
+
 func PostArticle(c *gin.Context) {
 
-	//FIXME
+	var json ArticleJSON
+	c.Bind(&json)
+
 	article := &model.Article{
-		Subject:"New subject",
-		Body:"New body",
+		Subject: json.Subject,
+		Body: json.Body,
 	}
 	article.SetId(bson.NewObjectId())
 
