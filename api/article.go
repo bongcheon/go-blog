@@ -51,6 +51,7 @@ func DeleteArticle(c *gin.Context) {
 type ArticleJSON struct {
 	Subject string `json:"subject" binding:"required"`
 	Body string `json:"body" binding:"required"`
+	Type model.ArticleType `json:"type" binding:"required"`
 }
 
 func PostArticle(c *gin.Context) {
@@ -64,12 +65,22 @@ func PostArticle(c *gin.Context) {
 		CreatedAt: time.Now(),
 	}
 	article.SetId(bson.NewObjectId())
+	article.SetType(json.Type)
+	if article.Type == "" {
+		c.JSON(http.StatusBadRequest, gin.H{})
+		return;
+	}
 
 	err := mongodb.GetCollection("Article").Save(article)
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		c.JSON(http.StatusOK, gin.H{"id":article.GetId(),"subject":article.Subject,"body":article.Body})
+		c.JSON(http.StatusOK, gin.H{
+			"id":article.GetId(),
+			"subject":article.Subject,
+			"body":article.Body,
+			"type":article.Type,
+		})
 	}
 }
 
