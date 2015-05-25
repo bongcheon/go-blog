@@ -37,7 +37,14 @@ func UpdateArticle(c *gin.Context) {
 
 func DeleteArticle(c *gin.Context) {
 	id := c.Params.ByName("id")
-	c.JSON(http.StatusOK, gin.H{"id":id})//TODO
+
+	err := mongodb.GetCollection("Article").RemoveByStrId(id)
+
+	if err != nil {
+		panic(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 type ArticleJSON struct {

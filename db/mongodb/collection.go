@@ -26,6 +26,19 @@ func (c *Collection) Save(doc SuperDocument) error {
 	return nil
 }
 
+func (c *Collection) RemoveByStrId(id string) error {
+	if bson.IsObjectIdHex(id) == false {
+		return nil
+	}
+
+	return c.RemoveById(bson.ObjectIdHex(id))
+}
+
+func (c *Collection) RemoveById(id bson.ObjectId) error {
+	collection := c.internalGetCollection()
+	return collection.RemoveId(id)
+}
+
 func (c *Collection) FindByStrId(id string, doc interface{}) error {
 	if bson.IsObjectIdHex(id) == false {
 		return errors.New("Invalid ObjectId")
