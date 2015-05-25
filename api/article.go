@@ -12,14 +12,22 @@ import (
 func GetArticle(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	article := &model.Article{
-	}
-	err := mongodb.GetCollection("Article").FindById(bson.ObjectIdHex(id), article)
+	article := &model.Article{}
+
+	err := mongodb.GetCollection("Article").FindByStrId(id, article)
+
 	if err != nil {
-		fmt.Println(err)
-	} else {
-		c.JSON(http.StatusOK, gin.H{"id":article.GetId(),"subject":article.Subject,"body":article.Body})
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "NotFound",
+		})
+    return;
 	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"id": article.GetId(),
+		"subject": article.Subject,
+		"body": article.Body,
+	})
 }
 
 func UpdateArticle(c *gin.Context) {
