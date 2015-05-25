@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"fmt"
+	"time"
 	"net/http"
 	"github.com/bongcheon/go-blog/model"
 	"github.com/bongcheon/go-blog/db/mongodb"
@@ -60,6 +61,7 @@ func PostArticle(c *gin.Context) {
 	article := &model.Article{
 		Subject: json.Subject,
 		Body: json.Body,
+		CreatedAt: time.Now(),
 	}
 	article.SetId(bson.NewObjectId())
 
