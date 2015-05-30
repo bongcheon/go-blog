@@ -28,6 +28,8 @@ func GetArticle(c *gin.Context) {
 		"id": article.GetId(),
 		"subject": article.Subject,
 		"body": article.Body,
+		"type": article.Type,
+		"createdAt": article.CreatedAt,
 	})
 }
 
@@ -80,6 +82,7 @@ func PostArticle(c *gin.Context) {
 			"subject":article.Subject,
 			"body":article.Body,
 			"type":article.Type,
+			"createdAt":article.CreatedAt,
 		})
 	}
 }

@@ -11,6 +11,7 @@ const (
 	ArticleText ArticleType = "Text"
 	ArticleLink ArticleType = "Link"
 	ArticleVideo ArticleType = "Video"
+	ArticleAbout ArticleType = "About"
 )
 
 type Article struct {
@@ -23,7 +24,7 @@ type Article struct {
 
 func (a *Article) SetType(t ArticleType) {
 	switch t {
-		case ArticleText, ArticleLink, ArticleVideo:
+		case ArticleText, ArticleLink, ArticleVideo, ArticleAbout:
 			a.Type = t;
 		default:
 			a.Type = "";
