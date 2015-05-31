@@ -43,7 +43,7 @@ func main() {
 	// CORS END
 
 	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "hello world")
+		c.String(http.StatusOK, "go-blog api server")
 	})
 	router.GET("/users/:username", api.GetUser)
 	router.POST("/users", api.AddUser)
