@@ -39,6 +39,17 @@ func (c *Collection) RemoveById(id bson.ObjectId) error {
 	return collection.RemoveId(id)
 }
 
+func (c *Collection) FindOne(query interface{}, doc interface{}) error {
+	collection := c.internalGetCollection()
+	err := collection.Find(query).One(doc)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (c *Collection) FindByStrId(id string, doc interface{}) error {
 	if bson.IsObjectIdHex(id) == false {
 		return errors.New("Invalid ObjectId")
