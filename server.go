@@ -45,6 +45,8 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "hello world")
 	})
+	router.GET("/users/:username", api.GetUser)
+	router.POST("/users", api.AddUser)
 	router.GET("/articles/:id", api.GetArticle)
 	router.PUT("/articles/:id", api.UpdateArticle)
 	router.DELETE("/articles/:id", api.DeleteArticle)
