@@ -19,7 +19,12 @@ func main() {
 		port = config.Get("server_port")
 	}
 
-	mongodb.Init(config.Get("mongodb_host"), config.Get("mongodb_db"))
+	mongoHost := os.Getenv("MONGO_HOST")
+	if mongoHost == "" {
+		mongoHost = config.Get("mongodb_host")
+	}
+
+	mongodb.Init(mongoHost, config.Get("mongodb_db"))
 
 	router := gin.Default()
 
