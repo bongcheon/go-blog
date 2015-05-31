@@ -33,11 +33,6 @@ func GetArticle(c *gin.Context) {
 	})
 }
 
-func UpdateArticle(c *gin.Context) {
-	id := c.Params.ByName("id")
-	c.JSON(http.StatusOK, gin.H{"id":id})//TODO
-}
-
 func DeleteArticle(c *gin.Context) {
 	id := c.Params.ByName("id")
 
@@ -83,6 +78,24 @@ func PostArticle(c *gin.Context) {
 			"body":article.Body,
 			"type":article.Type,
 			"createdAt":article.CreatedAt,
+		})
+	}
+}
+
+func UpdateArticle(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	var update ArticleJSON
+	c.Bind(&update)
+
+	err := mongodb.GetCollection("Article").UpdateByStrId(id, bson.M{"$set":update})
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"id":id,
+			"subject":update.Subject,
+			"body":update.Body,
 		})
 	}
 }

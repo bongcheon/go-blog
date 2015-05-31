@@ -26,6 +26,21 @@ func (c *Collection) Save(doc SuperDocument) error {
 	return nil
 }
 
+func (c *Collection) UpdateById(id bson.ObjectId, update interface{}) error {
+	collection := c.internalGetCollection()
+	err := collection.UpdateId(id, update)
+	return err
+}
+
+func (c *Collection) UpdateByStrId(id string, update interface{}) error {
+	if bson.IsObjectIdHex(id) == false {
+		return nil
+	}
+
+	err := c.UpdateById(bson.ObjectIdHex(id), update)
+	return err
+}
+
 func (c *Collection) RemoveByStrId(id string) error {
 	if bson.IsObjectIdHex(id) == false {
 		return nil
