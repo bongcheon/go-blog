@@ -54,6 +54,12 @@ func (c *Collection) RemoveById(id bson.ObjectId) error {
 	return collection.RemoveId(id)
 }
 
+func (c *Collection) Find(query interface{}) *mgo.Query {
+	collection := c.internalGetCollection()
+	err := collection.Find(query)
+	return err
+}
+
 func (c *Collection) FindOne(query interface{}, doc interface{}) error {
 	collection := c.internalGetCollection()
 	err := collection.Find(query).One(doc)

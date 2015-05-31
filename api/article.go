@@ -3,12 +3,42 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"fmt"
+	"strconv"
 	"time"
 	"net/http"
 	"github.com/bongcheon/go-blog/model"
 	"github.com/bongcheon/go-blog/db/mongodb"
 	"gopkg.in/mgo.v2/bson"
 )
+
+func GetArticles(c *gin.Context) {
+	var err error
+	var page, pagesize int
+	page, err = strconv.Atoi(c.DefaultQuery("page", "1"))
+	pagesize, err = strconv.Atoi(c.DefaultQuery("pagesize", "8"))
+
+	if page < 1 {
+		c.JSON(http.StatusBadRequest, gin.H{})
+		return
+	}
+
+	if pagesize < 1 {
+		c.JSON(http.StatusBadRequest, gin.H{})
+		return
+	}
+
+	var skipcnt = (page - 1) * pagesize
+
+	var results []bson.M
+
+	err = mongodb.GetCollection("Article").Find(bson.M{}).Sort("-createdat").Skip(skipcnt).Limit(pagesize).All(&results)
+
+	if err != nil {
+		panic(err)
+	}
+
+	c.JSON(http.StatusOK, results)
+}
 
 func GetArticle(c *gin.Context) {
 	id := c.Params.ByName("id")
@@ -21,7 +51,7 @@ func GetArticle(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "NotFound",
 		})
-		return;
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -65,7 +95,7 @@ func PostArticle(c *gin.Context) {
 	article.SetType(json.Type)
 	if article.Type == "" {
 		c.JSON(http.StatusBadRequest, gin.H{})
-		return;
+		return
 	}
 
 	err := mongodb.GetCollection("Article").Save(article)

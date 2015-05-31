@@ -48,6 +48,7 @@ func main() {
 	})
 	router.GET("/users/:username", api.GetUser)
 	router.POST("/users", api.AddUser)
+	router.GET("/articles", api.GetArticles)
 	router.GET("/articles/:id", api.GetArticle)
 	router.PUT("/articles/:id", api.UpdateArticle)
 	router.DELETE("/articles/:id", api.DeleteArticle)
