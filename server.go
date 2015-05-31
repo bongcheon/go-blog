@@ -34,6 +34,7 @@ func main() {
 		// Should be moved to a proper middleware
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type,Token")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE")
 		c.Next()
 	})
 
