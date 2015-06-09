@@ -34,6 +34,7 @@ func main() {
 		// Should be moved to a proper middleware
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type,Token")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET,HEAD,PUT,POST,DELETE")
 		c.Next()
 	})
 
@@ -47,6 +48,7 @@ func main() {
 	})
 	router.GET("/users/:username", api.GetUser)
 	router.POST("/users", api.AddUser)
+	router.GET("/articles", api.GetArticles)
 	router.GET("/articles/:id", api.GetArticle)
 	router.PUT("/articles/:id", api.UpdateArticle)
 	router.DELETE("/articles/:id", api.DeleteArticle)
